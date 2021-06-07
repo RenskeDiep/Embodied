@@ -13,5 +13,3 @@ class Aggregations(Swarm):
             screen,
             points_to_plot,
         )
-
-    pass
