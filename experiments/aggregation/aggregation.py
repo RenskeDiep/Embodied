@@ -14,13 +14,15 @@ class Aggregations(Swarm):
             object1_loc = config["aggregation"]["object1_location"]
             object2_loc = config["aggregation"]["object2_location"]
 
-            scale = [100, 100]
+            scale1 = config["aggregation"]["object1_scale"]
+            scale2 = config["aggregation"]["object2_scale"]
 
             filename = ("experiments/aggregation/images/greyc1.png")
-            self.objects.add_object(file=filename, pos=object1_loc, scale=scale, obj_type="obstacle")
+            self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="obstacle")
 
             filename = ("experiments/aggregation/images/greyc2.png")
-            self.objects.add_object(file=filename, pos=object2_loc, scale=scale, obj_type="obstacle")
+            self.objects.add_object(file=filename, pos=object2_loc, scale=scale2, obj_type="obstacle")
+
 
         for index, agent in enumerate(range(num_agents)):
             coordinates = generate_coordinates(self.screen)

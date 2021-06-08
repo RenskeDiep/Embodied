@@ -62,7 +62,7 @@ class Flock(Swarm):  # also access methods from the super class Swarm
         for index, agent in enumerate(range(num_agents)):
             coordinates = generate_coordinates(self.screen)
 
-            # if obstacles present re-estimate the corrdinates
+            # if obstacles present re-estimate the coordinates
             if config["flock"]["obstacles"]:
                 if config["flock"]["outside"]:
                     while (

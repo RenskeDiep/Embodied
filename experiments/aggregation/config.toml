@@ -19,3 +19,5 @@ min_speed = 4.0
 obstacles = true
 object1_location  = [200, 500]
 object2_location  = [800, 500]
+object1_scale = [100,100]
+object2_scale = [100,100]
