@@ -1,7 +1,9 @@
 [base]
 swarm_type       = 'aggregation'
 n_agents = 40
-object_location  = [500, 500]
+site = true
+background_grey = true
+object_location  = [200, 500]
 
 [screen]
 frames = inf
