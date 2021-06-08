@@ -7,9 +7,8 @@ from simulation.swarm import Swarm
 class Aggregations(Swarm):
     """ """
     def __init__(
-            self,screen,points_to_plot
+            self,screen
     )-> None:
             super(Aggregations, self).__init__(
             screen,
-            points_to_plot,
         )
