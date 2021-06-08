@@ -13,10 +13,11 @@ class Aggregations(Swarm):
 
         # add obstacle/-s to the environment if present
         if config["base"]["site"]:
-            object_loc = config["base"]["object_location"]
+            object1_loc = config["objects"]["object1_location"]
+            object2_loc = config["objects"]["object2_location"]
 
-
-            scale = [200, 200]
+            scale1 = config["objects"]["object1_size"]
+            scale2 = config["objects"]["object2_size"]
 
             filename = (
                 "experiments/aggregation/images/greyc1.png"
@@ -25,9 +26,12 @@ class Aggregations(Swarm):
             )
 
             self.objects.add_object(
-                file=filename, pos=object_loc, scale=scale, obj_type="site"
+                file=filename, pos=object1_loc, scale=scale1, obj_type="site"
+            )
+            self.objects.add_object(
+                file=filename, pos=object2_loc, scale=scale2, obj_type="site"
             )
 
-            min_x, max_x = area(object_loc[0], scale[0])
-            min_y, max_y = area(object_loc[1], scale[1])
+            min_x, max_x = area(object1_loc[0], scale1[0])
+            min_y, max_y = area(object1_loc[1], scale1[1])
 
