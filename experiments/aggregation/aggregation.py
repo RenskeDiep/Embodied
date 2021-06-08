@@ -6,9 +6,8 @@ from simulation.swarm import Swarm
 
 class Aggregations(Swarm):
     """ """
-    def __init__(
-            self,screen
-    )-> None:
-            super(Aggregations, self).__init__(
-            screen,
-        )
+    def __init__(self, screen) -> None:
+        super(Aggregations, self).__init__(screen)
+
+    def initialize(self, num_agents) -> None:
+        pass
