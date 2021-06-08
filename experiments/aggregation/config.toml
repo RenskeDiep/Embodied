@@ -1,7 +1,6 @@
 [base]
 swarm_type       = 'aggregation'
 n_agents = 40
-object_location  = [500, 500]
 
 [screen]
 frames = inf
@@ -15,3 +14,8 @@ dt        = 0.2
 mass      = 20
 max_speed = 7.0
 min_speed = 4.0
+
+[aggregation]
+obstacles = true
+object1_location  = [200, 500]
+object2_location  = [800, 500]
