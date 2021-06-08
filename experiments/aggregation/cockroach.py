@@ -5,7 +5,7 @@ from simulation.utils import *
 
 class Cockroach(Agent):
     def __init__(
-            self, pos, v, aggregation, index: int, image: str = "experiments/aggregation/images/ant.png"
+            self, pos, v, aggregation, index: int, image: str = "experiments/aggregation/images/ant.png", state = 'wandering'
     ) -> None:
         super(Cockroach, self).__init__(
             pos,
@@ -21,8 +21,16 @@ class Cockroach(Agent):
         )
 
         self.aggregation = aggregation
+        self.state = state
 
-    """ """
+    def change_state(self, new_state):
+        #possible states are 'wandering', 'joining', 'leaving' and 'still'
+        self.state = new_state
+        pass
+
+    def site_behaviour(self):
+        pass
+
     def update_actions(self) -> None:
         # avoid any obstacles in the environment
         for obstacle in self.aggregation.objects.obstacles:
