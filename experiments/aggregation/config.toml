@@ -15,7 +15,7 @@ mass      = 20
 max_speed = 7.0
 min_speed = 4.0
 #view of neighbor agents
-radius_view = 100
+radius_view = 70
 
 [aggregation]
 obstacles = true

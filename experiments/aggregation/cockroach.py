@@ -49,18 +49,19 @@ class Cockroach(Agent):
     def site_behaviour(self):
         if self.state == 'wandering':
             """"probability function Pjoin to consider joining, dependent on neighbours in radius"""
-            neighbors_in_radius = len(self.find_neighbors(self, config["agent"]["radius_view "]))
+            neighbors_in_radius = len(self.aggregation.find_neighbors(self, config["agent"]["radius_view"]))
             neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
-            Pjoin = multivariate_normal(mean=neighbor_percentage, cov=0.2)
+            Pjoin = multivariate_normal.pdf(x=neighbor_percentage, mean=None, cov=0.2)
             if Pjoin > 0.5:  # random value, idk...
                 self.change_state('joining')
                 self.timer = 0
         if self.state == 'still':
             """"probability function Pleave to consider leaving dependent on neighbours in radius"""
-            neighbors_in_radius = len(self.find_neighbors(self, config["agent"]["radius_view "]))
+            neighbors_in_radius = len(self.aggregation.find_neighbors(self, config["agent"]["radius_view"]))
             neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
-            Pleave = multivariate_normal(mean= (1-neighbor_percentage), cov=0.2)
-            if Pleave > 0.5:  # random value, idk...
+            Pleave = multivariate_normal.pdf(x=(1-neighbor_percentage), mean=None, cov=0.2)
+            if Pleave > 0.2:  # random value, idk...
+                self.set_velocity()
                 self.change_state('leaving')
                 self.timer = 0
         pass
@@ -72,25 +73,27 @@ class Cockroach(Agent):
             if bool(collide):
                 self.avoid_obstacle()
 
-
         if self.state == 'wandering':
             # check if agent on aggregation site
             for site in self.aggregation.objects.sites:
-                on_site = pygame.sprite.collide_mask(self, obstacle)
+                on_site = pygame.sprite.collide_mask(self, site)
                 if bool(on_site):
+                    self.v = [0,0]
                     self.site_behaviour()
+
 
         if self.state == 'joining':
             self.timer += 1
-            if self.timer > 10: #Tjoin, we should give this a value somewhere...
+            if self.timer > 1: #Tjoin, we should give this a value somewhere...
                 self.change_state(('still'))
 
         if self.state == 'still':
             self.site_behaviour()
+            self.v = [0,0]
 
         if self.state == 'leaving':
             self.timer += 1
-            if self.timer > 10: #Tleave, we should give this a value somewhere
+            if self.timer > 1: #Tleave, we should give this a value somewhere
                 self.change_state('wandering')
 
         '''align_force, cohesion_force, separate_force = self.neighbor_forces()
