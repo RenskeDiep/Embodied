@@ -1,6 +1,7 @@
 from experiments.aggregation.config import config
 from simulation.agent import Agent
 from simulation.utils import *
+from scipy.stats import multivariate_normal
 
 
 class Cockroach(Agent):
@@ -29,16 +30,36 @@ class Cockroach(Agent):
         self.state = new_state
         pass
 
+    def find_neighbors(self, agent: Agent, radius: float) -> list:
+        """
+        Try to locate all the neighbors of the given agent, considering a specified radius, by computing the euclidean
+        distance between the agent and any other member of the swarm
+
+        Args:
+        ----
+            agent (Agent):
+            radius (float):
+
+        """
+        #  Check that the each other agent is not our considered one, if the type is None or infected, and the distance
+        return [neighbor for neighbor in self.agents if
+                agent is not neighbor  and
+                self.compute_distance(agent, neighbor) < radius]
+
     def site_behaviour(self):
         if self.state == 'wandering':
             """"probability function Pjoin to consider joining, dependent on neighbours in radius"""
-            Pjoin = 0.4  # just an example, still needs to be implemented
+            neighbors_in_radius = len(self.find_neighbors(self, config["agent"]["radius_view "]))
+            neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
+            Pjoin = multivariate_normal(mean=neighbor_percentage, cov=0.2)
             if Pjoin > 0.5:  # random value, idk...
                 self.change_state('joining')
                 self.timer = 0
         if self.state == 'still':
             """"probability function Pleave to consider leaving dependent on neighbours in radius"""
-            Pleave = 0.4  # just an example, still needs to be implemented
+            neighbors_in_radius = len(self.find_neighbors(self, config["agent"]["radius_view "]))
+            neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
+            Pleave = multivariate_normal(mean= (1-neighbor_percentage), cov=0.2)
             if Pleave > 0.5:  # random value, idk...
                 self.change_state('leaving')
                 self.timer = 0
