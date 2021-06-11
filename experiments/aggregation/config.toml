@@ -19,9 +19,9 @@ radius_view = 70
 
 [aggregation]
 obstacles = true
-object1_location  = [250, 500]
+object1_location  = [200, 500]
 object2_location  = [800, 500]
-object1_scale = [200,200]
-object2_scale = [100, 100]
+object1_scale = [150,150]
+object2_scale = [150, 150]
 containing_object_location = [500,500]
 containing_object_scale = [1000, 1000]

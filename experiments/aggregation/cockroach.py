@@ -60,7 +60,7 @@ class Cockroach(Agent):
             """"probability function Pleave to consider leaving dependent on neighbours in radius"""
             neighbors_in_radius = len(self.aggregation.find_neighbors(self, config["agent"]["radius_view"]))
             neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
-            Pleave = multivariate_normal.rvs(mean=-0.3, cov=0.0135)
+            Pleave = multivariate_normal.rvs(mean=-0.3, cov=0.015)
             if Pleave > neighbor_percentage:  # random value, idk...
                 self.v = self.copy_v
                 self.timer = 0
