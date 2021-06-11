@@ -52,16 +52,16 @@ class Cockroach(Agent):
             """"probability function Pjoin to consider joining, dependent on neighbours in radius"""
             neighbors_in_radius = len(self.aggregation.find_neighbors(self, config["agent"]["radius_view"]))
             neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
-            Pjoin = multivariate_normal.pdf(x=neighbor_percentage, mean=1.0, cov=1.0)
-            if Pjoin > 0.26:  # random value, idk...
+            Pjoin = multivariate_normal.rvs(mean=0.9, cov=0.15)
+            if Pjoin < neighbor_percentage:  # random value, idk...
                 self.change_state('joining')
                 self.timer = 0
         if self.state == 'still':
             """"probability function Pleave to consider leaving dependent on neighbours in radius"""
             neighbors_in_radius = len(self.aggregation.find_neighbors(self, config["agent"]["radius_view"]))
             neighbor_percentage = neighbors_in_radius / (config["base"]["n_agents"])
-            Pleave = multivariate_normal.pdf(x=(1-neighbor_percentage), mean=0, cov=1.0)
-            if Pleave > 0.3:  # random value, idk...
+            Pleave = multivariate_normal.rvs(mean=-0.3, cov=0.0135)
+            if Pleave > neighbor_percentage:  # random value, idk...
                 self.v = self.copy_v
                 self.timer = 0
                 self.change_state('leaving')
@@ -84,7 +84,7 @@ class Cockroach(Agent):
 
         if self.state == 'joining':
             self.timer += 1
-            if self.timer > 50: #Tjoin, we should give this a value somewhere...
+            if self.timer > 20: #Tjoin, we should give this a value somewhere...
                 self.copy_v = self.v
                 self.change_state(('still'))
 

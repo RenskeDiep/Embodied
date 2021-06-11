@@ -12,16 +12,16 @@ height    = 8
 width     = 10
 dt        = 0.2
 mass      = 20
-max_speed = 7.0
-min_speed = 4.0
+max_speed = 15.0
+min_speed = 10.0
 #view of neighbor agents
 radius_view = 70
 
 [aggregation]
 obstacles = true
-object1_location  = [200, 500]
+object1_location  = [250, 500]
 object2_location  = [800, 500]
 object1_scale = [200,200]
-object2_scale = [100,100]
+object2_scale = [100, 100]
 containing_object_location = [500,500]
 containing_object_scale = [1000, 1000]
