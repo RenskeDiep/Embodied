@@ -5,6 +5,7 @@ from experiments.covid.config import config
 from simulation.agent import Agent
 from simulation.utils import *
 import numpy as np
+from scipy.stats import multivariate_normal
 
 
 class Person(Agent):
@@ -63,15 +64,13 @@ class Person(Agent):
                 self.avoid_obstacle()
 
         neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
-        print(self.state)
         if self.state == 'susceptible':
             for neighbor in neighbors:
                 if neighbor.state == 'infected':
                     self.change_state('infected')
 
         if self.state == 'infected':
-            self.timer += 1
-            if self.timer > config['base']['time_recovery']:
+            if multivariate_normal.rvs(mean = 0.4, cov= 0.1) > 1.5:
                 self.change_state('recovered')
 
         if self.state == 'recovered':
