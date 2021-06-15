@@ -4,6 +4,7 @@ import pygame
 from experiments.covid.config import config
 from simulation.agent import Agent
 from simulation.utils import *
+import numpy as np
 
 
 class Person(Agent):
@@ -32,6 +33,14 @@ class Person(Agent):
             dT=config["agent"]["dt"],
             index=index
         )
+        self.state = self.initial_state()
+
+    def initial_state(self):
+        if np.random.random() < 0.1:
+            return("infected")
+        else:
+            return("susceptible")
+
     def update_actions(self) -> None:
         pass
 
