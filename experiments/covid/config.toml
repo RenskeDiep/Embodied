@@ -5,7 +5,7 @@ time_recovery = 1500
 
 [screen]
 frames = inf
-height = 1000
+height = 800
 width  = 1000
 
 [agent]

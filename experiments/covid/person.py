@@ -65,16 +65,17 @@ class Person(Agent):
 
         neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
         if self.state == 'susceptible':
+            self.population.datapoints.append('S')
             for neighbor in neighbors:
                 if neighbor.state == 'infected':
                     self.change_state('infected')
 
         if self.state == 'infected':
+            self.population.datapoints.append('I')
             if multivariate_normal.rvs(mean = 0.4, cov= 0.1) > 1.5:
                 self.change_state('recovered')
 
         if self.state == 'recovered':
-            pass
-
+            self.population.datapoints.append('R')
 
 

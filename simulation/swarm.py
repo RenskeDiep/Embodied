@@ -26,7 +26,7 @@ class Swarm(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, screen_size, plot=None) -> None:
+    def __init__(self, screen_size, plot={"S": [], "I": [], "R": []}) -> None:
         """
         Args:
         ----
