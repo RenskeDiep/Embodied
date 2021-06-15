@@ -1,6 +1,7 @@
 [base]
 swarm_type       = 'covid'
 n_agents = 40
+time_recovery = 1500
 
 [screen]
 frames = inf
@@ -14,6 +15,7 @@ dt        = 0.2
 mass      = 20
 max_speed = 7.0
 min_speed = 4.0
+radius_view = 15
 
 [population]
 obstacles = true
