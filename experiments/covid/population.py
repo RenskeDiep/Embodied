@@ -20,7 +20,11 @@ class Population(Swarm):
         if config["population"]["obstacles"]:
             object1_loc = config["population"]["object1_location"]
             scale1 = config["population"]["scale1"]
-            filename = ("experiments/aggregation/images/greyc2.png")
+            if config["obstacle_type"]["4x4_grid"]:
+                filename = ("experiments/covid/images/lockdown_boundaries.png")
+            elif config["obstacle_type"]["partially_open"]:
+                filename = ("experiments/covid/images/partially_open_lockdown.png")
+
             self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="obstacle")
 
         # To Do
