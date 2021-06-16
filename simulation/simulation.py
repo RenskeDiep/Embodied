@@ -102,10 +102,10 @@ class Simulation:
         if self.swarm_type == "covid":
             _plot_covid(self.swarm.points_to_plot)
 
-        elif self.swarm_type == "Flock":
+        elif self.swarm_type == "flock":
             _plot_flock()
 
-        elif self.swarm_type == "Aggregation":
+        elif self.swarm_type == "aggregation":
             _plot_aggregation()
 
     def initialize(self) -> None:
@@ -141,9 +141,9 @@ class Simulation:
         if self.iter == float("inf"):
 
             while self.running:
-                init = time.time()
+                #init = time.time()
                 self.simulate()
-                print(time.time() - init)
+                #print(time.time() - init)
             self.plot_simulation()
         else:
             for i in range(self.iter):
