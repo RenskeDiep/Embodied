@@ -122,6 +122,8 @@ class Simulation:
                 self.running = False
         if self.swarm.quit == True:
             self.running = False
+            print("timer:")
+            print(self.swarm.timer)
 
         self.swarm.update()
         self.swarm.display(self.screen)
@@ -143,7 +145,7 @@ class Simulation:
         if self.iter == float("inf"):
 
             while self.running:
-                #init = time.time()
+                init = time.time()
                 self.simulate()
                 #print(time.time() - init)
             self.plot_simulation()

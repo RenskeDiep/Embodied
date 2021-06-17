@@ -41,6 +41,7 @@ class Swarm(pygame.sprite.Sprite):
         self.points_to_plot = plot
         self.datapoints: list = []
         self.quit = False
+        self.timer = 0
 
     def add_agent(self, agent: Agent) -> None:
         """
@@ -138,6 +139,7 @@ class Swarm(pygame.sprite.Sprite):
         if self.datapoints:
             self.add_point(self.datapoints)
         self.remain_in_screen()
+        self.timer += 1
 
     def display(self, screen: pygame.Surface) -> None:
         """
