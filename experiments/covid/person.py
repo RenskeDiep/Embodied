@@ -75,7 +75,7 @@ class Person(Agent):
                     self.pos = self.prev_pos.copy()
                     self.v = self.prev_v.copy()
 
-                    self.avoided_obstacles = True
+                self.avoided_obstacles = True
                 self.avoid_obstacle()
                 return
 
