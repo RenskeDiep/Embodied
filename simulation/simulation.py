@@ -124,6 +124,8 @@ class Simulation:
             self.running = False
             print("timer:")
             print(self.swarm.timer)
+            print("Total number of people still susceptible:")
+            print(self.swarm.points_to_plot["S"][-1])
 
         self.swarm.update()
         self.swarm.display(self.screen)

@@ -33,6 +33,13 @@ class Population(Swarm):
         for index, agent in enumerate(range(num_agents)):
             coordinates = generate_coordinates(self.screen)
 
+            if config["population"]["obstacles"]:
+                for obj in self.objects.obstacles:
+                    while obj.mask.get_at((int(coordinates[0]),int(coordinates[1]))) == 1:
+                        coordinates = generate_coordinates(self.screen)
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index))
+
+"""
             if config["population"]["obstacles"]:  # you need to define this variable
                 for obj in self.objects.obstacles:
                     rel_coordinate = relative(
@@ -45,5 +52,5 @@ class Population(Swarm):
                                 coordinates, (obj.rect[0], obj.rect[1])
                             )
                     except IndexError:
-                        pass
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index))
+                        pass """
+

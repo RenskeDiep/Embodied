@@ -68,7 +68,7 @@ class Person(Agent):
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.5:
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:
                 self.change_state('recovered')
 
         elif self.state == 'susceptible':
