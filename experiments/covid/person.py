@@ -61,6 +61,22 @@ class Person(Agent):
             self.image.fill((0,255,0))
 
     def update_actions(self) -> None:
+
+        neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
+        if self.state == 'recovered':
+            self.population.datapoints.append('R')
+
+        elif self.state == 'infected':
+            self.population.datapoints.append('I')
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.5:
+                self.change_state('recovered')
+
+        elif self.state == 'susceptible':
+            self.population.datapoints.append('S')
+            for neighbor in neighbors:
+                if neighbor.state == 'infected':
+                    self.change_state('infected')
+
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
@@ -83,20 +99,3 @@ class Person(Agent):
             self.prev_pos = None
 
             self.avoided_obstacles = False
-
-        neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
-        if self.state == 'susceptible':
-            self.population.datapoints.append('S')
-            for neighbor in neighbors:
-                if neighbor.state == 'infected':
-                    self.change_state('infected')
-
-        if self.state == 'infected':
-            self.population.datapoints.append('I')
-            if multivariate_normal.rvs(mean = 0.4, cov= 0.1) > 1.5:
-                self.change_state('recovered')
-
-        if self.state == 'recovered':
-            self.population.datapoints.append('R')
-
-

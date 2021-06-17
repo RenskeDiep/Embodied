@@ -92,7 +92,7 @@ class Swarm(pygame.sprite.Sprite):
 
     def remain_in_screen(self) -> None:
         """
-        Before displaying everything on the next frame, check if every agent is withtin the screen (on the x or y axis).
+        Before displaying everything on the next frame, check if every agent is within the screen (on the x or y axis).
         If it is outside of the screen, reposition it at the center.
         """
         for agent in self.agents:
@@ -118,8 +118,6 @@ class Swarm(pygame.sprite.Sprite):
         values = {"S": 0, "I": 0, "R": 0}
         for state in lst:
             values[state] += 1
-        print(values)
-        print(values["I"])
         if values["I"] == 0:
             self.quit = True
 
