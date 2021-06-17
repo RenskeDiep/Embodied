@@ -18,12 +18,12 @@ min_speed = 20
 radius_view = 15
 
 [population]
-obstacles = true
+obstacles = false
 4x4_grid = false
 partially_open = true
 object1_location = [500,400]
 scale1 = [1000, 800]
 
 [obstacle_type]  #only one true at a time
-4x4_grid = true
-partially_open = false
+4x4_grid = false
+partially_open = true

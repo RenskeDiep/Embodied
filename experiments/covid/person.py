@@ -44,7 +44,7 @@ class Person(Agent):
         self.timer = 0
 
     def initial_state(self):
-        if np.random.random() < 0.1:
+        if self.index < (config["base"]["n_agents"]/10):
             self.image.fill((255,0,0))
             return('infected')
         else:
