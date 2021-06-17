@@ -35,6 +35,20 @@ def _plot_covid(data) -> None:
     fig.savefig(output_name)
     plt.show()
 
+def plot_r_number(r_numbers):
+
+    output_name = "experiments/covid/plots/Covid-19-r_number%s.png" % time.strftime(
+        "-%m.%d.%y-%H:%M", time.localtime()
+    )
+    fig = plt.figure()
+    plt.plot(r_numbers)
+    plt.title("Covid-19 Simulation Reproduction number")
+    plt.xlabel("Time")
+    plt.ylabel("r-number")
+    plt.legend()
+    fig.savefig(output_name)
+    plt.show()
+
 
 def _plot_flock() -> None:
     """Plot the data related to the flocking experiment. TODO"""
@@ -101,6 +115,7 @@ class Simulation:
         """Depending on the type of experiment, plots the final data accordingly"""
         if self.swarm_type == "covid":
             _plot_covid(self.swarm.points_to_plot)
+            plot_r_number(self.swarm.r_number_plot)
 
         elif self.swarm_type == "flock":
             _plot_flock()

@@ -1,5 +1,6 @@
 import pygame
 
+
 from simulation.agent import Agent
 from simulation.objects import Objects
 from simulation.utils import dist
@@ -42,6 +43,11 @@ class Swarm(pygame.sprite.Sprite):
         self.datapoints: list = []
         self.quit = False
         self.timer = 0
+        self.r_number = 0
+        self.r_number_plot = []
+        self.susceptible_part_of_population = 0
+        self.R0 = 3
+
 
     def add_agent(self, agent: Agent) -> None:
         """
@@ -120,6 +126,11 @@ class Swarm(pygame.sprite.Sprite):
             values[state] += 1
         if values["I"] == 0:
             self.quit = True
+
+        # to calculate the r-number
+        self.susceptible_part_of_population = values["S"]
+        self.r_number = self.susceptible_part_of_population * self.R0
+        self.r_number_plot.append(self.r_number)
 
         for x in values:
             self.points_to_plot[x].append(values[x])
