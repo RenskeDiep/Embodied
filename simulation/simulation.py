@@ -120,6 +120,8 @@ class Simulation:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+        if self.swarm.quit == True:
+            self.running = False
 
         self.swarm.update()
         self.swarm.display(self.screen)
