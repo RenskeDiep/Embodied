@@ -11,7 +11,7 @@ from scipy.stats import multivariate_normal
 class Person(Agent):
     """ """
     def __init__(
-            self, pos, v, population, index: int, image = None, color = (255,255,255),
+            self, pos, v, population, index: int, age, image = None, color = (255,255,255),
     ) -> None:
         """
                 Args:
@@ -34,8 +34,9 @@ class Person(Agent):
             width=config["agent"]["width"],
             height=config["agent"]["height"],
             dT=config["agent"]["dt"],
-            index=index
+            index=index,
         )
+        self.age = age
         self.state = self.initial_state()
         self.population = population
         self.avoided_obstacles: bool = False
@@ -49,6 +50,7 @@ class Person(Agent):
             return('infected')
         else:
             return('susceptible')
+
 
     def change_state(self, state):
         self.state = state
