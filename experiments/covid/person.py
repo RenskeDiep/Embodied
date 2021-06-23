@@ -1,10 +1,6 @@
-import numpy as np
-import pygame
-
 from experiments.covid.config import config
 from simulation.agent import Agent
 from simulation.utils import *
-import numpy as np
 from scipy.stats import multivariate_normal
 
 
@@ -81,22 +77,25 @@ class Person(Agent):
 
     def update_actions(self) -> None:
 
-        particles = self.population.find_virus_particles(self, config["agent"]["radius_view"])
-        neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
+        #neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
         if self.state == 'recovered':
             self.population.datapoints.append('R')
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
-            self.population.add_virus(self.pos)
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.9:
+                pos0 = self.pos[0] + 5
+                pos1 = self.pos[1] + 5
+                self.population.add_virus([pos0,pos1])
             if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
         elif self.state == 'susceptible':
+            particles = self.population.find_virus_particles(self, config["agent"]["radius_view"])
             self.population.datapoints.append('S')
             for particle in particles:
                 if particle.state == 'infecting':
-                    if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > 0.6:  # just random values, definitely need to be changed
+                    if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > -3:  # just random values, definitely need to be changed
                         self.change_state('infected')
 
         # avoid any obstacles in the environment

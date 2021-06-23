@@ -1,5 +1,5 @@
 import pygame
-
+import math
 from simulation.agent import Agent
 from simulation.objects import Objects
 from simulation.utils import dist
@@ -58,7 +58,6 @@ class Swarm(pygame.sprite.Sprite):
 
     def add_particle(self, agent: Agent):
         self.particles.append(agent)
-        self.index += 1
 
     def compute_distance(self, a: Agent, b: Agent) -> float:
         """
@@ -96,11 +95,13 @@ class Swarm(pygame.sprite.Sprite):
                 neighbor.type in [None, "I"] and
                 self.compute_distance(agent, neighbor) < radius]
 
+
+
     def find_virus_particles(self, agent: Agent, radius: float) -> list:
-        return [neighbor for neighbor in self.particles if
-                agent is not neighbor and
-                neighbor.state == 'infecting' and
-                self.compute_distance(agent, neighbor) < radius]
+        return [neighbor for neighbor in self.particles
+                if agent is not neighbor and
+            self.compute_distance(agent, neighbor) < radius
+            ]
 
     def remain_in_screen(self) -> None:
         """
@@ -116,6 +117,16 @@ class Swarm(pygame.sprite.Sprite):
                 agent.pos[1] = float(self.screen[1])
             if agent.pos[1] > self.screen[1]:
                 agent.pos[1] = 0.0
+
+        for virus in self.particles:
+            if virus.pos[0] > self.screen[0]:
+                virus.pos[0] = 0.0
+            if virus.pos[0] < 0:
+                virus.pos[0] = float(self.screen[0])
+            if virus.pos[1] < 0:
+                virus.pos[1] = float(self.screen[1])
+            if virus.pos[1] > self.screen[1]:
+                virus.pos[1] = 0.0
 
     def add_point(self, lst) -> None:
         """
@@ -175,7 +186,7 @@ class Swarm(pygame.sprite.Sprite):
             agent.reset_frame()
 
         for virus in self.particles:
-            virus.update()
+            virus.update_virus()
             virus.display(screen)
             virus.reset_frame()
 

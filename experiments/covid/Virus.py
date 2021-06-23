@@ -28,11 +28,11 @@ class Virus(Agent):
             v,
             image,
             color,
-            max_speed=config["agent"]["max_speed"],
-            min_speed=config["agent"]["min_speed"],
-            mass=config["agent"]["mass"],
-            width=2,
-            height=2,
+            max_speed=config["virus"]["max_speed"],
+            min_speed=config["virus"]["min_speed"],
+            mass=config["virus"]["mass"],
+            width=config["virus"]["width"],
+            height=config["virus"]["height"],
             dT=config["agent"]["dt"],
             index=index,
         )
@@ -47,17 +47,18 @@ class Virus(Agent):
     def change_state(self, state):
         self.state = state
         if state == 'non-infecting':
-            self.image.fill((0,255,255,1))
+            self.image.fill((0,255,255))
         if state == 'infecting':
             self.image.fill((255,0,255))
-            print('TEST')
 
     def update_actions(self) -> None:
 
         if self.state == 'infecting':
             self.timer += 1
             if self.timer >= 200:  #random getal
-                self.change_state('non-infecting')
+                #self.change_state('non-infecting')
+                self.population.particles.remove(self)
+
 
                 # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
