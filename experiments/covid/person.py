@@ -43,6 +43,7 @@ class Person(Agent):
         self.prev_pos = None
         self.prev_v = None
         self.timer = 0
+        self.sus_multiplier = self.susceptibility()
 
     def initial_state(self):
         if self.index < (config["base"]["n_agents"]/10):
@@ -50,6 +51,22 @@ class Person(Agent):
             return('infected')
         else:
             return('susceptible')
+
+    def susceptibility(self):
+        if self.age < 25:
+            return 0.2
+        elif self.age >= 25 and self.age <35:
+            return 0.4
+        elif self.age >= 35 and self.age < 45:
+            return 0.8
+        elif self.age >= 45 and self.age < 55:
+            return 1.0
+        elif self.age >= 55 and self.age < 65:
+            return 1.3
+        elif self.age >= 65:
+            return 1.5
+        else:
+            return 1
 
 
     def change_state(self, state):
@@ -70,14 +87,15 @@ class Person(Agent):
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
         elif self.state == 'susceptible':
             self.population.datapoints.append('S')
             for neighbor in neighbors:
                 if neighbor.state == 'infected':
-                    self.change_state('infected')
+                    if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > 0.6:  # just random values, definitely need to be changed
+                        self.change_state('infected')
 
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
