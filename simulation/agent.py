@@ -213,6 +213,16 @@ class Agent(pygame.sprite.Sprite):  # super class
         )
         self.pos += self.v * self.dT
 
+    def update_virus(self) -> None:
+        """
+        Update the agent's velocity and position with the previously calculated speed and steering,
+        so it's ready for the next frame.
+        """
+        self.v = truncate(
+            self.v, self.max_speed, self.min_speed
+        )
+        self.pos += self.v * self.dT
+
     def display(self, screen: pygame.Surface) -> None:
         """
         Refresh the updated agent on the GUI for the next frame.
