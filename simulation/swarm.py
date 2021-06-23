@@ -36,12 +36,14 @@ class Swarm(pygame.sprite.Sprite):
         super(Swarm, self).__init__()
         self.dist_temp: dict = {}
         self.agents: list = []
+        self.particles: list = []
         self.screen = screen_size
         self.objects: Objects = Objects()
         self.points_to_plot = plot
         self.datapoints: list = []
         self.quit = False
         self.timer = 0
+        self.index = 0
 
     def add_agent(self, agent: Agent) -> None:
         """
@@ -53,6 +55,10 @@ class Swarm(pygame.sprite.Sprite):
 
         """
         self.agents.append(agent)
+
+    def add_particle(self, agent: Agent):
+        self.particles.append(agent)
+        self.index += 1
 
     def compute_distance(self, a: Agent, b: Agent) -> float:
         """
@@ -88,6 +94,12 @@ class Swarm(pygame.sprite.Sprite):
         return [neighbor for neighbor in self.agents if
                 agent is not neighbor and
                 neighbor.type in [None, "I"] and
+                self.compute_distance(agent, neighbor) < radius]
+
+    def find_virus_particles(self, agent: Agent, radius: float) -> list:
+        return [neighbor for neighbor in self.particles if
+                agent is not neighbor and
+                neighbor.state == 'infecting' and
                 self.compute_distance(agent, neighbor) < radius]
 
     def remain_in_screen(self) -> None:
@@ -133,6 +145,8 @@ class Swarm(pygame.sprite.Sprite):
         self.datapoints = []
         for agent in self.agents:
             agent.update_actions()
+        for virus in self.particles:
+            virus.update_actions()
 
         if self.datapoints:
             self.add_point(self.datapoints)
@@ -159,5 +173,10 @@ class Swarm(pygame.sprite.Sprite):
             agent.update()
             agent.display(screen)
             agent.reset_frame()
+
+        for virus in self.particles:
+            virus.update()
+            virus.display(screen)
+            virus.reset_frame()
 
         self.dist_temp = {}

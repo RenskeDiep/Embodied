@@ -1,5 +1,6 @@
 from experiments.covid.config import config
 from experiments.covid.person import Person
+from experiments.covid.Virus import Virus
 from simulation.swarm import Swarm
 from simulation.utils import *
 
@@ -10,6 +11,13 @@ class Population(Swarm):
     def __init__(self, screen_size) -> None:
         super(Population, self).__init__(screen_size)
         self.ages = []
+        self.particles = []
+        self.index = 0
+
+    def add_virus(self, pos):
+        #self.particles.append(Virus(pos=pos, v=None, population=self, index=self.index))
+        self.add_particle(Virus(pos=pos, v=None, population=self, index=self.index))
+        self.index += 1
 
     def determine_ages(self):
         number_of_agents = config["base"]["n_agents"]

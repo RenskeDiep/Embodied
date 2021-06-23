@@ -81,19 +81,21 @@ class Person(Agent):
 
     def update_actions(self) -> None:
 
+        particles = self.population.find_virus_particles(self, config["agent"]["radius_view"])
         neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
         if self.state == 'recovered':
             self.population.datapoints.append('R')
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
+            self.population.add_virus(self.pos)
             if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
         elif self.state == 'susceptible':
             self.population.datapoints.append('S')
-            for neighbor in neighbors:
-                if neighbor.state == 'infected':
+            for particle in particles:
+                if particle.state == 'infecting':
                     if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > 0.6:  # just random values, definitely need to be changed
                         self.change_state('infected')
 
