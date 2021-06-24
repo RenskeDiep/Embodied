@@ -40,6 +40,7 @@ class Person(Agent):
         self.prev_v = None
         self.timer = 0
         self.timer2 = 0
+        self.timer3 = 0
         self.avoid_lockdown = True
         self.sus_multiplier = self.susceptibility()
 
@@ -68,7 +69,6 @@ class Person(Agent):
 
 
     def change_state(self, state):
-        self.state = state
         if state == 'susceptible':
             self.image.fill((255, 255, 255))
         if state == 'infected':
@@ -76,6 +76,11 @@ class Person(Agent):
             self.timer = 0
         if state == 'recovered':
             self.image.fill((0,255,0))
+            self.v = self.set_velocity()
+        if state == 'still':
+            self.image.fill((200,0,0))
+            self.v = [0, 0]
+        self.state = state
 
     def update_actions(self) -> None:
 
@@ -104,6 +109,24 @@ class Person(Agent):
                     if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > -3:  # just random values, definitely need to be changed
                         self.change_state('infected')
 
+        elif self.state == 'still':
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.9:
+                pos0 = self.pos[0] + 5
+                pos1 = self.pos[1] + 5
+                self.population.add_virus([pos0,pos1])
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
+                self.change_state('recovered')
+
+
+        for site in self.population.objects.sites:
+            collide = pygame.sprite.collide_mask(self, site)
+            if bool(collide):
+                if self.state == 'infected':
+                    self.timer3 += 1
+                    if self.timer3 > 30:
+                        self.change_state("still")
+                        self.timer3 = 0
+
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
@@ -119,13 +142,13 @@ class Person(Agent):
                     self.v = self.prev_v.copy()
 
 
-                if multivariate_normal.rvs(mean=0.4, cov=0.2) > 0.95:
+                if self.state == 'infected' or multivariate_normal.rvs(mean=0.4, cov=0.2) > 0.98:
                     self.avoid_lockdown = False
                 self.timer2 += 1
-                if self.timer2 > 70:
+                if self.timer2 > 100:
                     self.avoid_lockdown = True
                     self.timer2 = 0
-                if self.avoid_lockdown != False:
+                if self.avoid_lockdown == True:
                     self.avoid_obstacle()
                     self.avoided_obstacles = True
                 return

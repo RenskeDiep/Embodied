@@ -28,7 +28,7 @@ radius_view = 10
 
 [population]
 obstacles = true
-social_distancing = true
+social_distancing = false
 4x4_grid = false
 partially_open = true
 object1_location = [500,400]
@@ -38,3 +38,4 @@ scale1 = [1000, 800]
 4x4_grid = false
 partially_open = false
 lock_down = true
+intelligent = true

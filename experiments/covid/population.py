@@ -64,9 +64,13 @@ class Population(Swarm):
             elif config["obstacle_type"]["partially_open"]:
                 filename = ("experiments/covid/images/partially_open_lockdown.png")
             elif config["obstacle_type"]["lock_down"]:
-                filename = ("experiments/covid/images/Lockdown_2.png")
+                filename = ("experiments/covid/images/Lockdown_trans.png")
 
             self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="obstacle")
+
+            if config["obstacle_type"]["lock_down"] and config["obstacle_type"]["intelligent"]:
+                filename= ("experiments/covid/images/Lockdown_background.png")
+                self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="site")
 
         # To Do
         # code snipet (not complete) to avoid initializing agents on obstacles
