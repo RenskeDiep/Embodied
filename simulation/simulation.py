@@ -24,6 +24,10 @@ def _plot_covid(data) -> None:
     output_name = "experiments/covid/plots/Covid-19-SIR%s.png" % time.strftime(
         "-%m.%d.%y-%H:%M", time.localtime()
     )
+    max_infected = max(data["I"])
+    time_peak = data["I"].index(max_infected)
+    print('max_infected: ', max_infected)
+    print('time_peak: ', time_peak)
     fig = plt.figure()
     plt.plot(data["S"], label="Susceptible", color=(1, 0.5, 0))  # Orange
     plt.plot(data["I"], label="Infected", color=(1, 0, 0))  # Red

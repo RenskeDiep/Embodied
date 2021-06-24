@@ -39,6 +39,8 @@ class Person(Agent):
         self.prev_pos = None
         self.prev_v = None
         self.timer = 0
+        self.timer2 = 0
+        self.avoid_lockdown = True
         self.sus_multiplier = self.susceptibility()
 
     def initial_state(self):
@@ -79,7 +81,7 @@ class Person(Agent):
 
         if config["population"]["social_distancing"]:
             neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
-            if len(neighbors)>0:
+            if len(neighbors) > 0:
                 self.avoid_obstacle()
 
         if self.state == 'recovered':
@@ -116,8 +118,16 @@ class Person(Agent):
                     self.pos = self.prev_pos.copy()
                     self.v = self.prev_v.copy()
 
-                self.avoided_obstacles = True
-                self.avoid_obstacle()
+
+                if multivariate_normal.rvs(mean=0.4, cov=0.2) > 0.95:
+                    self.avoid_lockdown = False
+                self.timer2 += 1
+                if self.timer2 > 70:
+                    self.avoid_lockdown = True
+                    self.timer2 = 0
+                if self.avoid_lockdown != False:
+                    self.avoid_obstacle()
+                    self.avoided_obstacles = True
                 return
 
             self.prev_v = None
