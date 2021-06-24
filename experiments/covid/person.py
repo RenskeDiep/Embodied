@@ -77,7 +77,11 @@ class Person(Agent):
 
     def update_actions(self) -> None:
 
-        #neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
+        if config["population"]["social_distancing"]:
+            neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
+            if len(neighbors)>0:
+                self.avoid_obstacle()
+
         if self.state == 'recovered':
             self.population.datapoints.append('R')
 
@@ -91,7 +95,7 @@ class Person(Agent):
                 self.change_state('recovered')
 
         elif self.state == 'susceptible':
-            particles = self.population.find_virus_particles(self, config["agent"]["radius_view"])
+            particles = self.population.find_virus_particles(self, config["virus"]["radius_view"])
             self.population.datapoints.append('S')
             for particle in particles:
                 if particle.state == 'infecting':

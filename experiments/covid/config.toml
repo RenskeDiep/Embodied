@@ -15,7 +15,7 @@ dt        = 0.2
 mass      = 20
 max_speed = 7
 min_speed = 4
-radius_view = 15
+radius_view = 20
 
 [virus]
 height    = 2
@@ -24,10 +24,11 @@ dt        = 0.2
 mass      = 20
 max_speed = 3
 min_speed = 0
-radius_view = 15
+radius_view = 10
 
 [population]
 obstacles = true
+social_distancing = true
 4x4_grid = false
 partially_open = true
 object1_location = [500,400]
@@ -35,4 +36,5 @@ scale1 = [1000, 800]
 
 [obstacle_type]  #only one true at a time
 4x4_grid = false
-partially_open = true
+partially_open = false
+lock_down = true

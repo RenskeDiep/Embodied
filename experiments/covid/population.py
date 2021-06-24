@@ -63,6 +63,8 @@ class Population(Swarm):
                 filename = ("experiments/covid/images/lockdown_boundaries.png")
             elif config["obstacle_type"]["partially_open"]:
                 filename = ("experiments/covid/images/partially_open_lockdown.png")
+            elif config["obstacle_type"]["lock_down"]:
+                filename = ("experiments/covid/images/Lockdown.png")
 
             self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="obstacle")
 
