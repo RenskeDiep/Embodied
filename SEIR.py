@@ -7,9 +7,10 @@ N = 17425000
 # Initial number of infected and recovered individuals, I0 and R0.
 E0, I0, R0 = 0, 0.1*N, 0
 # Everyone else, S0, is susceptible to infection initially.
-S0 = N - I0 - R0
+S0 = N - I0 - R0 - E0
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days). and mean incubation time rate ( in 1/days)
-beta, gamma, delta = 2.0, 1./25, 1./4.5
+# beta is number of people infected during disease/total days of sickness
+beta, gamma, delta = 3.0/25, 1./25, 1./4.5
 # A grid of time points (in days)
 t = np.linspace(0, 160, 160)
 

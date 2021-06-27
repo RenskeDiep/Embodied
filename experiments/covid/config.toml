@@ -27,7 +27,7 @@ min_speed = 0
 radius_view = 10
 
 [population]
-obstacles = true
+obstacles = false
 social_distancing = false
 4x4_grid = false
 partially_open = true

@@ -38,6 +38,7 @@ class Person(Agent):
         self.avoided_obstacles: bool = False
         self.prev_pos = None
         self.prev_v = None
+        self.timer0 = 0
         self.timer = 0
         self.timer2 = 0
         self.timer3 = 0
@@ -71,6 +72,9 @@ class Person(Agent):
     def change_state(self, state):
         if state == 'susceptible':
             self.image.fill((255, 255, 255))
+        if state == 'exposed':
+            self.image.fill((255,255,0))
+            self.timer0 = 0
         if state == 'infected':
             self.image.fill((255,0,0))
             self.timer = 0
@@ -98,16 +102,24 @@ class Person(Agent):
                 pos0 = self.pos[0] + 5
                 pos1 = self.pos[1] + 5
                 self.population.add_virus([pos0,pos1])
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
+            roll = np.random.uniform(0,1)
+            if roll < 0.0004: # around 25 days, 100 timesteps = 1 day
+            #if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
+        elif self.state == 'exposed':
+            self.population.datapoints.append('E')
+            roll = np.random.uniform(0,1)
+            if roll < 0.002: # roughly 5 days, 100 timesteps = 1 day
+                self.change_state('infected')
+
         elif self.state == 'susceptible':
-            particles = self.population.find_virus_particles(self, config["virus"]["radius_view"])
             self.population.datapoints.append('S')
+            particles = self.population.find_virus_particles(self, config["virus"]["radius_view"])
             for particle in particles:
                 if particle.state == 'infecting':
                     if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > -3:  # just random values, definitely need to be changed
-                        self.change_state('infected')
+                        self.change_state('exposed')
 
         elif self.state == 'still':
             if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.9:

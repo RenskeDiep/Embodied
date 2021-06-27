@@ -26,7 +26,7 @@ class Swarm(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, screen_size, plot={"S": [], "I": [], "R": []}) -> None:
+    def __init__(self, screen_size, plot={"S": [], "E": [], "I": [], "R": []}) -> None:
         """
         Args:
         ----
@@ -138,7 +138,7 @@ class Swarm(pygame.sprite.Sprite):
 
         """
         # Count current numbers
-        values = {"S": 0, "I": 0, "R": 0}
+        values = {"S": 0, "E": 0, "I": 0, "R": 0}
         for state in lst:
             values[state] += 1
         if values["I"] == 0:
