@@ -141,7 +141,7 @@ class Swarm(pygame.sprite.Sprite):
         values = {"S": 0, "E": 0, "I": 0, "R": 0}
         for state in lst:
             values[state] += 1
-        if values["I"] == 0:
+        if values["I"] + values["E"] == 0:
             self.quit = True
 
         for x in values:

@@ -22,7 +22,7 @@ def _plot_covid(data) -> None:
 
     """
     output_name = "experiments/covid/plots/Covid-19-SIR%s.png" % time.strftime(
-        "-%m.%d.%y-%H:%M", time.localtime()
+        "-%m-%d-%y-%H-%M", time.localtime()
     )
     max_infected = max(data["I"])
     time_peak = data["I"].index(max_infected)

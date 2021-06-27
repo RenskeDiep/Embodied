@@ -98,19 +98,19 @@ class Person(Agent):
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.9:
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.82:
                 pos0 = self.pos[0] + 5
                 pos1 = self.pos[1] + 5
                 self.population.add_virus([pos0,pos1])
             roll = np.random.uniform(0,1)
-            if roll < 0.0004: # around 25 days, 100 timesteps = 1 day
+            if roll < 0.004: # around 25 days, 10 timesteps = 1 day
             #if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
         elif self.state == 'exposed':
             self.population.datapoints.append('E')
             roll = np.random.uniform(0,1)
-            if roll < 0.002: # roughly 5 days, 100 timesteps = 1 day
+            if roll < 0.02: # roughly 5 days, 10 timesteps = 1 day
                 self.change_state('infected')
 
         elif self.state == 'susceptible':
@@ -118,15 +118,18 @@ class Person(Agent):
             particles = self.population.find_virus_particles(self, config["virus"]["radius_view"])
             for particle in particles:
                 if particle.state == 'infecting':
-                    if self.sus_multiplier * multivariate_normal.rvs(mean=0.4, cov=0.1)  > -3:  # just random values, definitely need to be changed
+                    roll = np.random.uniform(0,1)
+                    if roll > 0.2 and np.random.uniform(0,self.sus_multiplier) > (self.sus_multiplier*0.3):  # just random values, definitely need to be changed
                         self.change_state('exposed')
 
         elif self.state == 'still':
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.9:
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.2:
                 pos0 = self.pos[0] + 5
                 pos1 = self.pos[1] + 5
                 self.population.add_virus([pos0,pos1])
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
+            roll = np.random.uniform(0, 1)
+            if roll < 0.004:  # around 25 days, 10 timesteps = 1 day
+                # if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
 
