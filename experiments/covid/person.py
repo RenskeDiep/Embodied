@@ -98,7 +98,7 @@ class Person(Agent):
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
-            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.82:
+            if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.83:
                 pos0 = self.pos[0] + 5
                 pos1 = self.pos[1] + 5
                 self.population.add_virus([pos0,pos1])
