@@ -1,3 +1,6 @@
+"""copied and adapted from: https://scipython.com/book/chapter-8-scipy/additional-examples/the-sir-epidemic-model/"""
+
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -10,7 +13,7 @@ E0, I0, R0 = 0, 0.1*N, 0
 S0 = N - I0 - R0 - E0
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days). and mean incubation time rate ( in 1/days)
 # beta is number of people infected during disease/total days of sickness
-beta, gamma, delta = 3.0/25, 1./25, 1./4.5
+beta, gamma, delta = 1.9/25, 1./25, 1./4.5
 # A grid of time points (in days)
 t = np.linspace(0, 160, 160)
 
