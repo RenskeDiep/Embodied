@@ -21,9 +21,11 @@ def _plot_covid(data) -> None:
         data:
 
     """
+    # name was changed, '.' are now '-'. This way images are saved in the right format and can actually be opened.
     output_name = "experiments/covid/plots/Covid-19-SIR%s.png" % time.strftime(
         "-%m-%d-%y-%H-%M", time.localtime()
     )
+    # print and calculate a few extra metrics:
     max_infected = max(data["I"])
     time_peak = data["I"].index(max_infected)
     print('max_infected: ')
@@ -35,6 +37,7 @@ def _plot_covid(data) -> None:
         AUC += data["I"][i]
     print("AUC:")
     print(AUC)
+
     fig = plt.figure()
     plt.plot(data["S"], label="Susceptible", color=(1, 0.5, 0))  # Orange
     plt.plot(data["E"], label="Exposed", color=(1,1,0)) # Yellow
@@ -132,8 +135,10 @@ class Simulation:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+        # quit if no more infected and exposed agents:
         if self.swarm.quit == True:
             self.running = False
+            # print extra metrics at end of simulation:
             print("timer:")
             print(self.swarm.timer)
             print("Total number of people still susceptible:")

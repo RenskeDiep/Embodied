@@ -1,5 +1,5 @@
 """copied and adapted from: https://scipython.com/book/chapter-8-scipy/additional-examples/the-sir-epidemic-model/"""
-
+# file to calculate and plot SEIR model, run individually, not called in main
 
 import numpy as np
 from scipy.integrate import odeint

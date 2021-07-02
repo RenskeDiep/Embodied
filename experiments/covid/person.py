@@ -38,13 +38,13 @@ class Person(Agent):
         self.avoided_obstacles: bool = False
         self.prev_pos = None
         self.prev_v = None
-        self.timer0 = 0
         self.timer = 0
         self.timer2 = 0
         self.timer3 = 0
         self.avoid_lockdown = True
         self.sus_multiplier = self.susceptibility()
 
+    # make first 10% of agents infected, rest susceptible
     def initial_state(self):
         if self.index < (config["base"]["n_agents"]/10):
             self.image.fill((255,0,0))
@@ -52,6 +52,7 @@ class Person(Agent):
         else:
             return('susceptible')
 
+    # function to determine susceptibility based on agent's age
     def susceptibility(self):
         if self.age < 25:
             return 0.2
@@ -68,13 +69,12 @@ class Person(Agent):
         else:
             return 1
 
-
+    # changes state of agent, includes changing color and velocity of agent and starting any needed timers
     def change_state(self, state):
         if state == 'susceptible':
             self.image.fill((255, 255, 255))
         if state == 'exposed':
             self.image.fill((255,255,0))
-            self.timer0 = 0
         if state == 'infected':
             self.image.fill((255,0,0))
             self.timer = 0
@@ -87,7 +87,7 @@ class Person(Agent):
         self.state = state
 
     def update_actions(self) -> None:
-
+        # turn the other way if too close to another agent
         if config["population"]["social_distancing"]:
             neighbors = self.population.find_neighbors(self, config["agent"]["radius_view"])
             if len(neighbors) > 0:
@@ -98,13 +98,14 @@ class Person(Agent):
 
         elif self.state == 'infected':
             self.population.datapoints.append('I')
+            # add virus particles around agents if they are infected
             if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.83:
                 pos0 = self.pos[0] + 5
                 pos1 = self.pos[1] + 5
                 self.population.add_virus([pos0,pos1])
+            # recover after a some time
             roll = np.random.uniform(0,1)
             if roll < 0.004: # around 25 days, 10 timesteps = 1 day
-            #if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
         elif self.state == 'exposed':
@@ -116,12 +117,15 @@ class Person(Agent):
         elif self.state == 'susceptible':
             self.population.datapoints.append('S')
             particles = self.population.find_virus_particles(self, config["virus"]["radius_view"])
+            # if too close to virus particles, have a chance to be infected
+            # chance influenced by age through sus multiplier
             for particle in particles:
                 if particle.state == 'infecting':
                     roll = np.random.uniform(0,1)
-                    if roll > 0.2 and np.random.uniform(0,self.sus_multiplier) > (self.sus_multiplier*0.3):  # just random values, definitely need to be changed
+                    if roll > 0.2 and np.random.uniform(0,self.sus_multiplier) > (self.sus_multiplier*0.3):
                         self.change_state('exposed')
 
+        # stay still if infected and inside lockdown environment, mimicks self quarantine
         elif self.state == 'still':
             if multivariate_normal.rvs(mean=0.4, cov=0.1) > 0.83:
                 pos0 = self.pos[0] + 5
@@ -132,7 +136,8 @@ class Person(Agent):
                 # if multivariate_normal.rvs(mean=0.4, cov=0.1) > 1.35:  # random values, should be based on lit
                 self.change_state('recovered')
 
-
+        # if infected and in lockdown environmnet, stay still
+        # only works if intelligent lockdown parameter is true in config
         for site in self.population.objects.sites:
             collide = pygame.sprite.collide_mask(self, site)
             if bool(collide):

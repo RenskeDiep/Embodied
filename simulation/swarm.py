@@ -56,6 +56,7 @@ class Swarm(pygame.sprite.Sprite):
         """
         self.agents.append(agent)
 
+    # add virus particles
     def add_particle(self, agent: Agent):
         self.particles.append(agent)
 
@@ -95,8 +96,7 @@ class Swarm(pygame.sprite.Sprite):
                 neighbor.type in [None, "I"] and
                 self.compute_distance(agent, neighbor) < radius]
 
-
-
+    # same as find neighbors function, except to find virus particles
     def find_virus_particles(self, agent: Agent, radius: float) -> list:
         return [neighbor for neighbor in self.particles
                 if agent is not neighbor and
@@ -149,7 +149,7 @@ class Swarm(pygame.sprite.Sprite):
 
     def update(self) -> None:
         """
-        Updates every agent, and if there is any datapoint (i.e. any change in sane-infected-recovered) add it to the
+        Updates every agent and virus particle, and if there is any datapoint (i.e. any change in sane-infected-recovered) add it to the
         points to be plotted. Finally, check if every agent is within the screen.
         """
         # update the movement

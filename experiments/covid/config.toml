@@ -27,14 +27,14 @@ min_speed = 0
 radius_view = 10
 
 [population]
-obstacles = false
+obstacles = true  #lockdown or not
 social_distancing = false
 4x4_grid = false
 partially_open = true
 object1_location = [500,400]
 scale1 = [1000, 800]
 
-[obstacle_type]  #only one true at a time
+[obstacle_type]  #only one of first three true at a time, intelligent can be true of false, depending on required lockdown
 4x4_grid = false
 partially_open = false
 lock_down = true

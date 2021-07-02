@@ -1,11 +1,8 @@
-import numpy as np
-import pygame
+# roughly the same as agent class, except for virus particles.
 
 from experiments.covid.config import config
 from simulation.agent import Agent
 from simulation.utils import *
-import numpy as np
-from scipy.stats import multivariate_normal
 
 
 class Virus(Agent):
@@ -43,7 +40,8 @@ class Virus(Agent):
         self.prev_v = None
         self.timer = 0
 
-
+    # change states between infecting and non-infecting and change color accordingly
+    # non-infecting particles are removed, function is only used for visualization during test-phase
     def change_state(self, state):
         self.state = state
         if state == 'non-infecting':
@@ -55,12 +53,12 @@ class Virus(Agent):
 
         if self.state == 'infecting':
             self.timer += 1
-            if self.timer >= 200:  #random getal
+            if self.timer >= 200:
                 #self.change_state('non-infecting')
                 self.population.particles.remove(self)
 
 
-                # avoid any obstacles in the environment
+        # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):

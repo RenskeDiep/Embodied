@@ -6,19 +6,19 @@ from simulation.utils import *
 
 
 class Population(Swarm):
-    """Class that represents the Population for the Covid experiment. TODO"""
+    """Class that represents the Population for the Covid experiment."""
 
     def __init__(self, screen_size) -> None:
         super(Population, self).__init__(screen_size)
         self.ages = []
         self.index = config["base"]["n_agents"]
 
+    # add virus particles
     def add_virus(self, pos):
         self.index += 1
-        #self.particles.append(Virus(pos=pos, v=None, population=self, index=self.index))
         self.add_particle(Virus(pos=pos, v=None, population=self, index=self.index))
 
-
+    # give the agents an age, mimics the dutch population in 2020
     def determine_ages(self):
         number_of_agents = config["base"]["n_agents"]
         # 22% younger than 20
@@ -72,9 +72,7 @@ class Population(Swarm):
                 filename= ("experiments/covid/images/Lockdown_background.png")
                 self.objects.add_object(file=filename, pos=object1_loc, scale=scale1, obj_type="site")
 
-        # To Do
-        # code snipet (not complete) to avoid initializing agents on obstacles
-        # given some coordinates and obstacles in the environment, this repositions the agent
+        #generate agent, prevent agents from being placed at obstacles.
         self.determine_ages()
         for index, agent in enumerate(range(num_agents)):
             coordinates = generate_coordinates(self.screen)
